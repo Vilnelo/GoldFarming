@@ -1,6 +1,6 @@
 /.vs
-*﻿.exe
-*﻿.log
+*.exe
+*.log
 *.bin
 *.apk
 /Library/
