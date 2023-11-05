@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Gold
+  - Silver
+  - Spikes
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Ground
+  - Water
+  - UI
+  - Items
+  - Spikes
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 14016697
+    locked: 0
+  - name: Environment
+    uniqueID: 3909539067
+    locked: 0
+  - name: Platforms
+    uniqueID: 3445732475
+    locked: 0
+  - name: Items
+    uniqueID: 77376623
+    locked: 0
+  - name: Hero
+    uniqueID: 1569835427
+    locked: 0
