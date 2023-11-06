@@ -25,7 +25,6 @@ public class Hero : MonoBehaviour
     private Animator _animator;
     private SpriteRenderer _sprite;
 
-
     public void SetDirection(Vector2 direction)
     {
         _direction = direction;

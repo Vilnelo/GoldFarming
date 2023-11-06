@@ -54,5 +54,28 @@ namespace GoldFarm
             _nextFrameTime += _secondsPerFrame;
             _currentSpriteIndex++;
         }
+
+        //public static void SetClip(string Animation)
+        //{
+        //    string _nameAnimation = Animation;
+
+        //    switch (_nameAnimation)
+        //    {
+        //        case "idle":
+        //            break;
+
+        //        case "jump":
+        //            break;
+
+        //        case "fall":
+        //            break;
+
+        //        case "run":
+        //            break;
+
+        //        default:
+        //            break;
+        //    }
+        //}
     }
 }
