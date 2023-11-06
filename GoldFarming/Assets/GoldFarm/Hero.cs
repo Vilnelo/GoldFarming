@@ -14,16 +14,17 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _groundCheckRadius;
     [SerializeField] private Vector3 _groundCheckPositionDelta;
 
-    private static readonly int Is_Ground_Key = Animator.StringToHash("Is_ground");
-    private static readonly int is_running_Key = Animator.StringToHash("is_running");
-    private static readonly int vertical_velocity_Key = Animator.StringToHash("vertical_velocity");
-    private static readonly int is_hit_Key = Animator.StringToHash("is_hit");
+    //private static readonly int Is_Ground_Key = Animator.StringToHash("Is_ground");
+    //private static readonly int is_running_Key = Animator.StringToHash("is_running");
+    //private static readonly int vertical_velocity_Key = Animator.StringToHash("vertical_velocity");
+    //private static readonly int is_hit_Key = Animator.StringToHash("is_hit");
 
     private Rigidbody2D _rigidbody;
 
     private Vector2 _direction;
     private Animator _animator;
     private SpriteRenderer _sprite;
+    private string _currentAnimation;
 
     public void SetDirection(Vector2 direction)
     {
@@ -47,10 +48,31 @@ public class Hero : MonoBehaviour
         var isGrounded = IsGrounded() || IsItems();
         var isSpikes = IsSpikes();
 
-        _animator.SetBool(Is_Ground_Key, isGrounded);
-        _animator.SetBool(is_running_Key, _direction.x != 0);
-        _animator.SetFloat(vertical_velocity_Key, _rigidbody.velocity.y);
-        _animator.SetBool(is_hit_Key, isSpikes);
+        //_animator.SetBool(Is_Ground_Key, isGrounded);
+        //_animator.SetBool(is_running_Key, _direction.x != 0);
+        //_animator.SetFloat(vertical_velocity_Key, _rigidbody.velocity.y);
+        //_animator.SetBool(is_hit_Key, isSpikes);
+
+        if (_direction.x != 0 && isGrounded)
+        {
+            SetClip("run");
+        }
+        else if (isSpikes)
+        {
+            SetClip("hit");
+        } 
+        else if (_rigidbody.velocity.y > 0 && !isGrounded)
+        {
+            SetClip("jump");
+        } else if (_rigidbody.velocity.y < 0 && !isGrounded)
+        {
+            SetClip("fall");
+        } else
+        {
+            SetClip("idle");
+        }
+
+
 
         UpdateSpriteDirection();
 
@@ -72,7 +94,6 @@ public class Hero : MonoBehaviour
 
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * 0.5f);
-
 
         }
     }
@@ -114,5 +135,12 @@ public class Hero : MonoBehaviour
         Gizmos.DrawSphere(transform.position + _groundCheckPositionDelta, _groundCheckRadius);
     }
 
+    private void SetClip(string _animation)
+    {
+        if (_currentAnimation == _animation) return;
+
+        _animator.Play(_animation);
+        _currentAnimation = _animation;
+    }
 
 }
