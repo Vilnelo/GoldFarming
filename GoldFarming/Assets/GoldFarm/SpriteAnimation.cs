@@ -17,6 +17,7 @@ namespace GoldFarm
         private float _secondsPerFrame;
         private int _currentSpriteIndex;
         private float _nextFrameTime;
+        private bool _isPlaying = true;
 
 
         private void Start()
@@ -24,6 +25,16 @@ namespace GoldFarm
             _renderer = GetComponent<SpriteRenderer>();
             
 
+        }
+
+        private void OnBecameVisible()
+        {
+            enabled = _isPlaying;
+        }
+
+        private void OnBecameInvisible()
+        {
+            enabled = false;
         }
         private void OnEnable()
         {
