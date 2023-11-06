@@ -25,6 +25,9 @@ public class Hero : MonoBehaviour
     private Animator _animator;
     private SpriteRenderer _sprite;
     private string _currentAnimation;
+    private bool _isGrounded;
+    private bool _isSpikes;
+    private bool _allawDoubleJump;
 
     public void SetDirection(Vector2 direction)
     {
@@ -39,32 +42,36 @@ public class Hero : MonoBehaviour
         _sprite = GetComponent<SpriteRenderer>();
     }
 
+    private void Update()
+    {
+        _isGrounded = IsGrounded() || IsItems();
+        _isSpikes = IsSpikes();
+    }
 
     public void FixedUpdate()
     {
-        _rigidbody.velocity = new Vector2(_direction.x * _speed, _rigidbody.velocity.y);
+        var xVelocity = _direction.x * _speed;
+        var yVelocity = CalculateYVelocity();
+        _rigidbody.velocity = new Vector2(xVelocity, yVelocity);
 
-        var isJumping = _direction.y > 0;
-        var isGrounded = IsGrounded() || IsItems();
-        var isSpikes = IsSpikes();
-
+        
         //_animator.SetBool(Is_Ground_Key, isGrounded);
         //_animator.SetBool(is_running_Key, _direction.x != 0);
         //_animator.SetFloat(vertical_velocity_Key, _rigidbody.velocity.y);
         //_animator.SetBool(is_hit_Key, isSpikes);
 
-        if (_direction.x != 0 && isGrounded)
+        if (_direction.x != 0 && _isGrounded)
         {
             SetClip("run");
         }
-        else if (isSpikes)
+        else if (_isSpikes)
         {
             SetClip("hit");
         } 
-        else if (_rigidbody.velocity.y > 0 && !isGrounded)
+        else if (_rigidbody.velocity.y > 0 && !_isGrounded)
         {
             SetClip("jump");
-        } else if (_rigidbody.velocity.y < 0 && !isGrounded)
+        } else if (_rigidbody.velocity.y < 0 && !_isGrounded)
         {
             SetClip("fall");
         } else
@@ -72,32 +79,47 @@ public class Hero : MonoBehaviour
             SetClip("idle");
         }
 
-
-
         UpdateSpriteDirection();
 
+    }
+
+   
+    private float CalculateYVelocity()
+    {
+        var _yVelosity = _rigidbody.velocity.y;
+        var isJumping = _direction.y > 0;
+
+        if (_isGrounded) _allawDoubleJump = true;
         if (isJumping)
         {
-            if (isGrounded && _rigidbody.velocity.y <= 0)
-            {
-                _rigidbody.AddForce(Vector2.up * _jump, ForceMode2D.Impulse);
-
-            }
-            else if (IsItems() && !isGrounded && _rigidbody.velocity.y <= 0)
-            {
-                _rigidbody.AddForce(Vector2.up * _jump, ForceMode2D.Impulse);
-
-            }
-
+            _yVelosity = CalculateJumpVelocity(_yVelosity);
         }
         else if (_rigidbody.velocity.y > 0)
 
         {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * 0.5f);
+            _yVelosity *= 0.5f;
 
         }
+
+        return _yVelosity;
     }
 
+    private float CalculateJumpVelocity(float _yVelosity)
+    {
+        var _isFalling = _rigidbody.velocity.y <= 0.001f;
+        if (!_isFalling) return _yVelosity;
+        if (_isGrounded || IsItems())
+        {
+            _yVelosity += _jump;
+        }
+        else if (_allawDoubleJump)
+        {
+            _yVelosity = _jump;
+            _allawDoubleJump = false;
+        }
+        return _yVelosity;
+
+    }
     private void UpdateSpriteDirection()
     {
 
