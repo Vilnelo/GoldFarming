@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 926502258907679145}
   - component: {fileID: 6624929923024548041}
   - component: {fileID: 8320216606872010861}
+  - component: {fileID: 1092825162992402146}
   m_Layer: 0
   m_Name: Hero_0
   m_TagString: Player
@@ -117,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 4
   _jump: 12
+  _damageJump: 20
   _ground:
     serializedVersion: 2
     m_Bits: 8
@@ -257,3 +259,31 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1092825162992402146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740603578659869097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281353b3447aed74384f8d3f64cf0b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tag: Spikes
+  _action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3989824381906082835}
+        m_TargetAssemblyTypeName: Hero, Assembly-CSharp
+        m_MethodName: TakeDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

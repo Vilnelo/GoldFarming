@@ -27,7 +27,6 @@ public class Hero : MonoBehaviour
     private SpriteRenderer _sprite;
     private string _currentAnimation;
     private bool _isGrounded;
-    private bool _isSpikes;
     private bool _allawDoubleJump;
 
     public void SetDirection(Vector2 direction)
@@ -46,7 +45,6 @@ public class Hero : MonoBehaviour
     private void Update()
     {
         _isGrounded = IsGrounded() || IsItems();
-        _isSpikes = IsSpikes();
     }
 
     public void FixedUpdate()
@@ -65,11 +63,6 @@ public class Hero : MonoBehaviour
         {
             SetClip("run");
         }
-        else if (_isSpikes)
-        {
-            SetClip("hit");
-            TakeDamage();
-        } 
         else if (_rigidbody.velocity.y > 0 && !_isGrounded)
         {
             SetClip("jump");
@@ -85,7 +78,6 @@ public class Hero : MonoBehaviour
 
     }
 
-   
     private float CalculateYVelocity()
     {
         var _yVelosity = _rigidbody.velocity.y;
@@ -147,12 +139,6 @@ public class Hero : MonoBehaviour
         return hit.collider != null;
     }
 
-    private bool IsSpikes()
-    {
-        var hit = Physics2D.CircleCast(transform.position + _groundCheckPositionDelta, _groundCheckRadius, Vector2.down, 0, _spikes);
-        return hit.collider != null;
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = IsGrounded() ? Color.green : IsItems() ? Color.yellow : Color.red;
@@ -167,8 +153,14 @@ public class Hero : MonoBehaviour
         _currentAnimation = _animation;
     }
 
-    private void TakeDamage() 
+    public void TakeDamage() 
     {
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _damageJump);
+        SetClip("hit");
+        if (!_isGrounded)
+        {
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _damageJump);
+        } 
+       
+
     }
 }
