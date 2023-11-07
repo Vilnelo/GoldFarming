@@ -7,6 +7,7 @@ public class Hero : MonoBehaviour
 
     [SerializeField] private float _speed;
     [SerializeField] private float _jump;
+    [SerializeField] private float _damageJump;
     [SerializeField] private LayerMask _ground;
     [SerializeField] private LayerMask _items;
     [SerializeField] private LayerMask _spikes;
@@ -67,6 +68,7 @@ public class Hero : MonoBehaviour
         else if (_isSpikes)
         {
             SetClip("hit");
+            TakeDamage();
         } 
         else if (_rigidbody.velocity.y > 0 && !_isGrounded)
         {
@@ -165,4 +167,8 @@ public class Hero : MonoBehaviour
         _currentAnimation = _animation;
     }
 
+    private void TakeDamage() 
+    {
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _damageJump);
+    }
 }
