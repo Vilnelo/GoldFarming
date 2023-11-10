@@ -14,6 +14,7 @@ namespace GoldFarm.Components
         public void ApplyDamage (int damageValue)
         {
             _health -= damageValue;
+            Debug.Log(_health);
             _onDamage?.Invoke();
             if(_health <= 0)
             {

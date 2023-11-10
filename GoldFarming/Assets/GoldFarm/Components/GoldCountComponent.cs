@@ -10,10 +10,15 @@ namespace GoldFarm.Components
     {
         [SerializeField] private Hero _hero;
         [SerializeField] private GameObject _objectToCount;
+
+        private int _coins;
+
+        public void Awake()
+        {
+            _coins = PlayerPrefs.GetInt("coins");
+        }
         public void CountGold()
         {
-            int _coins = PlayerPrefs.GetInt("coins");
-
 
             if (_objectToCount.tag == "Gold")
             {

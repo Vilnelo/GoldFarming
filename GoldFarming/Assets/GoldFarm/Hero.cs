@@ -13,7 +13,9 @@ public class Hero : MonoBehaviour
     [SerializeField] private LayerMask _items;
     [SerializeField] private LayerMask _spikes;
     [SerializeField] private float _interactionRadius;
-    
+    [SerializeField] private SpawnComponent _footStepParticles;
+    [SerializeField] private ParticleSystem _hitParticlesGold;
+
 
     [SerializeField] private float _groundCheckRadius;
     [SerializeField] private Vector3 _groundCheckPositionDelta;
@@ -28,10 +30,10 @@ public class Hero : MonoBehaviour
 
     private Vector2 _direction;
     private Animator _animator;
-    private SpriteRenderer _sprite;
     private string _currentAnimation;
     private bool _isGrounded;
     private bool _allawDoubleJump;
+    //private int _coins;
 
     public void SetDirection(Vector2 direction)
     {
@@ -43,12 +45,12 @@ public class Hero : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _sprite = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
         _isGrounded = IsGrounded() || IsItems();
+
     }
 
     public void FixedUpdate()
@@ -123,11 +125,11 @@ public class Hero : MonoBehaviour
 
         if (_direction.x > 0)
         {
-            _sprite.flipX = false;
+            transform.localScale = Vector3.one;
         }
         else if (_direction.x < 0)
         {
-            _sprite.flipX = true;
+            transform.localScale = new Vector3(-1, 1, 1);
         }
     }
 
@@ -163,11 +165,28 @@ public class Hero : MonoBehaviour
         if (!_isGrounded)
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _damageJump);
-        } 
-       
+        }
+
+        //if (_coins > 0)
+        //{
+            SpawnCoins();
+        //}
+        
 
     }
-    
+
+    private void SpawnCoins()
+    {
+        //var numCoinsToDispose = Mathf.Min(_coins, 20);
+        
+        //var burst = _hitParticlesGold.emission.GetBurst(0);
+        //burst.count = numCoinsToDispose;
+        //_hitParticlesGold.emission.SetBurst(0, burst);
+
+        _hitParticlesGold.gameObject.SetActive(true);
+        _hitParticlesGold.Play();
+    }
+
     public void Interact()
     {
         var size = Physics2D.OverlapCircleNonAlloc(transform.position, _interactionRadius, _interactionResult, _items);
@@ -179,5 +198,10 @@ public class Hero : MonoBehaviour
                 interactable.Interact();
             }
         }
+    }
+
+    public void SpawnFootDust()
+    {
+        _footStepParticles.Spawn();
     }
 }

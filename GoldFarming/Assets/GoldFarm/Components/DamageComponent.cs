@@ -8,6 +8,7 @@ namespace GoldFarm.Components
     {
         [SerializeField] private int _damage;
 
+
         public void ApplyDamage(GameObject target)
         {
             var _health = target.GetComponent<HealthComponent>();
