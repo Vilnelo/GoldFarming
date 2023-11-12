@@ -31,6 +31,7 @@ public class Hero : MonoBehaviour
     private string _currentAnimation;
     private bool _isGrounded;
     private bool _allawDoubleJump;
+    private bool _isJumpingPressed;
 
     public void SetDirection(Vector2 direction)
     {
@@ -81,12 +82,17 @@ public class Hero : MonoBehaviour
         var _yVelosity = _rigidbody.velocity.y;
         var isJumping = _direction.y > 0;
 
-        if (_isGrounded) _allawDoubleJump = true;
+        if (_isGrounded)
+        {
+            _isJumpingPressed = false;
+            _allawDoubleJump = true;
+        }
         if (isJumping)
         {
+            _isJumpingPressed = true;
             _yVelosity = CalculateJumpVelocity(_yVelosity);
         }
-        else if (_rigidbody.velocity.y > 0)
+        else if (_rigidbody.velocity.y > 0 && _isJumpingPressed)
 
         {
             _yVelosity *= 0.5f;
@@ -153,6 +159,7 @@ public class Hero : MonoBehaviour
 
     public void TakeDamage() 
     {
+        _isJumpingPressed = false;
         SetClip("hit");
         if (!_isGrounded)
         {
