@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 255955711972451563}
   - component: {fileID: 8221442674833298293}
   - component: {fileID: -386646705782751606}
+  - component: {fileID: 2428669365069918175}
   m_Layer: 7
   m_Name: Spikes
   m_TagString: Spikes
@@ -145,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hero: {fileID: 0}
-  _objectToCount: {fileID: 8371456581427404073}
+  _coinsCount: -5
 --- !u!114 &-386646705782751606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,13 +165,38 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8221442674833298293}
         m_TargetAssemblyTypeName: GoldFarm.Components.GoldCountComponent, Assembly-CSharp
-        m_MethodName: CountGold
-        m_Mode: 1
+        m_MethodName: GoldCount
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 3740603578659869097, guid: c1eefcf0261101144981c3ccc7b64482, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2428669365069918175}
+        m_TargetAssemblyTypeName: GoldFarm.Components.DamageComponent, Assembly-CSharp
+        m_MethodName: ApplyDamage
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3740603578659869097, guid: c1eefcf0261101144981c3ccc7b64482, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2428669365069918175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8371456581427404073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d4b86d85173c5741ac53e46a98acbe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: -2

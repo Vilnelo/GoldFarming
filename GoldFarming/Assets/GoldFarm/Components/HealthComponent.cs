@@ -10,15 +10,23 @@ namespace GoldFarm.Components
         [SerializeField] private int _health;
         [SerializeField] private UnityEvent _onDamage;
         [SerializeField] private UnityEvent _onDie;
+        [SerializeField] private UnityEvent _onHeal;
 
         public void ApplyDamage (int damageValue)
         {
-            _health -= damageValue;
+            _health += damageValue;
             Debug.Log(_health);
-            _onDamage?.Invoke();
-            if(_health <= 0)
+
+            if (damageValue >= 0)
             {
-                _onDie?.Invoke();
+                _onHeal?.Invoke();
+            } else
+            {
+                _onDamage?.Invoke();
+                if (_health <= 0)
+                {
+                    _onDie?.Invoke();
+                }
             }
         }
 

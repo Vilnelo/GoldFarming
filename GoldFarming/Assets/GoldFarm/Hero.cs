@@ -9,23 +9,21 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _jump;
     [SerializeField] private float _damageJump;
+    [SerializeField] private float _isHightJump;
     [SerializeField] private LayerMask _ground;
     [SerializeField] private LayerMask _items;
     [SerializeField] private LayerMask _spikes;
     [SerializeField] private float _interactionRadius;
     [SerializeField] private SpawnComponent _footStepParticles;
-    [SerializeField] private ParticleSystem _hitParticlesGold;
+    [SerializeField] private ParticleSystem _jumpParticle;
+    [SerializeField] private ParticleSystem _fallParticle;
 
 
     [SerializeField] private float _groundCheckRadius;
     [SerializeField] private Vector3 _groundCheckPositionDelta;
 
-    //private static readonly int Is_Ground_Key = Animator.StringToHash("Is_ground");
-    //private static readonly int is_running_Key = Animator.StringToHash("is_running");
-    //private static readonly int vertical_velocity_Key = Animator.StringToHash("vertical_velocity");
-    //private static readonly int is_hit_Key = Animator.StringToHash("is_hit");
-
     private Rigidbody2D _rigidbody;
+    private float _startHightPosition;
     private Collider2D[] _interactionResult = new Collider2D[1];
 
     private Vector2 _direction;
@@ -33,7 +31,6 @@ public class Hero : MonoBehaviour
     private string _currentAnimation;
     private bool _isGrounded;
     private bool _allawDoubleJump;
-    //private int _coins;
 
     public void SetDirection(Vector2 direction)
     {
@@ -45,6 +42,7 @@ public class Hero : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _startHightPosition = _rigidbody.position.y;
     }
 
     private void Update()
@@ -58,12 +56,6 @@ public class Hero : MonoBehaviour
         var xVelocity = _direction.x * _speed;
         var yVelocity = CalculateYVelocity();
         _rigidbody.velocity = new Vector2(xVelocity, yVelocity);
-
-        
-        //_animator.SetBool(Is_Ground_Key, isGrounded);
-        //_animator.SetBool(is_running_Key, _direction.x != 0);
-        //_animator.SetFloat(vertical_velocity_Key, _rigidbody.velocity.y);
-        //_animator.SetBool(is_hit_Key, isSpikes);
 
         if (_direction.x != 0 && _isGrounded)
         {
@@ -166,25 +158,6 @@ public class Hero : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _damageJump);
         }
-
-        //if (_coins > 0)
-        //{
-            SpawnCoins();
-        //}
-        
-
-    }
-
-    private void SpawnCoins()
-    {
-        //var numCoinsToDispose = Mathf.Min(_coins, 20);
-        
-        //var burst = _hitParticlesGold.emission.GetBurst(0);
-        //burst.count = numCoinsToDispose;
-        //_hitParticlesGold.emission.SetBurst(0, burst);
-
-        _hitParticlesGold.gameObject.SetActive(true);
-        _hitParticlesGold.Play();
     }
 
     public void Interact()
@@ -203,5 +176,25 @@ public class Hero : MonoBehaviour
     public void SpawnFootDust()
     {
         _footStepParticles.Spawn();
+    }
+
+    public void SpawnJumpDust()
+    {
+        _jumpParticle.gameObject.SetActive(true);
+        _jumpParticle.Play();
+    }
+
+    public void IsHight()
+    {
+        _startHightPosition = _rigidbody.position.y;
+    }
+    public void SpawnFallDust()
+    {
+        if (_startHightPosition - _isHightJump > _rigidbody.position.y)
+        {
+            _fallParticle.gameObject.SetActive(true);
+            _fallParticle.Play();
+            _startHightPosition = _rigidbody.position.y;
+        }
     }
 }
