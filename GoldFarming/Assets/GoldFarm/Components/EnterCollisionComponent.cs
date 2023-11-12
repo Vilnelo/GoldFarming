@@ -13,7 +13,6 @@ namespace GoldFarm.Components
         {
             if (other.gameObject.CompareTag(_tag))
             {
-
                 _action?.Invoke(other.gameObject);
             }
         }
