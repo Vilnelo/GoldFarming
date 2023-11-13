@@ -15,18 +15,23 @@ namespace GoldFarm.Components
         public void ApplyDamage (int damageValue)
         {
             _health += damageValue;
-            Debug.Log(_health);
 
             if (damageValue >= 0)
             {
                 _onHeal?.Invoke();
             } else
             {
-                _onDamage?.Invoke();
+                
                 if (_health <= 0)
                 {
                     _onDie?.Invoke();
                 }
+                else
+                {
+                    _onDamage?.Invoke();
+                    Debug.Log(_health);
+                }
+                
             }
         }
 
