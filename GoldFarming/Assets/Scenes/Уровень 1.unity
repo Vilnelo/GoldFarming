@@ -18500,10 +18500,18 @@ PrefabInstance:
       propertyPath: _damageJump
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 3989824381906082835, guid: c1eefcf0261101144981c3ccc7b64482, type: 3}
+      propertyPath: _fallDownVelocity
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6416262289335868043, guid: c1eefcf0261101144981c3ccc7b64482, type: 3}
       propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 289603047}
+    - target: {fileID: 8718609337261754321, guid: c1eefcf0261101144981c3ccc7b64482, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace GoldFarm.Components
 {
-    public class DamageComponent : MonoBehaviour
+    public class ModifyHealthComponent : MonoBehaviour
     {
-        [SerializeField] private int _damage;
+        [SerializeField] private int _healthApply;
 
 
         public void ApplyDamage(GameObject target)
         {
             var _health = target.GetComponent<HealthComponent>();
-            _health?.ApplyDamage(_damage);
+            _health?.ApplyDamage(_healthApply);
 
         }
     }

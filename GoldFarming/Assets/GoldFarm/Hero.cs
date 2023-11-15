@@ -1,4 +1,5 @@
 using GoldFarm.Components;
+using GoldFarm.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _jump;
     [SerializeField] private float _damageJump;
-    [SerializeField] private float _isHightJump;
+    [SerializeField] private float _fallDownVelocity;
     [SerializeField] private LayerMask _ground;
     [SerializeField] private LayerMask _items;
     [SerializeField] private LayerMask _spikes;
@@ -23,7 +24,6 @@ public class Hero : MonoBehaviour
     [SerializeField] private Vector3 _groundCheckPositionDelta;
 
     private Rigidbody2D _rigidbody;
-    private float _startHightPosition;
     private Collider2D[] _interactionResult = new Collider2D[1];
 
     private Vector2 _direction;
@@ -43,7 +43,6 @@ public class Hero : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _startHightPosition = _rigidbody.position.y;
     }
 
     private void Update()
@@ -107,12 +106,14 @@ public class Hero : MonoBehaviour
         var _isFalling = _rigidbody.velocity.y <= 0.001f;
         if (!_isFalling) return _yVelosity;
         if (_isGrounded || IsItems())
-        {
+        {   
             _yVelosity += _jump;
+            SpawnJumpDust();
         }
         else if (_allawDoubleJump)
         {
             _yVelosity = _jump;
+            SpawnJumpDust();
             _allawDoubleJump = false;
         }
         return _yVelosity;
@@ -191,17 +192,20 @@ public class Hero : MonoBehaviour
         _jumpParticle.Play();
     }
 
-    public void IsHight()
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        _startHightPosition = _rigidbody.position.y;
+        if (other.gameObject.IsInLayer(_ground))
+        {
+            var contact = other.contacts[0];
+            if(contact.relativeVelocity.y >= _fallDownVelocity)
+            {
+                SpawnFallDust();
+            }
+        }
     }
     public void SpawnFallDust()
     {
-        if (_startHightPosition - _isHightJump > _rigidbody.position.y)
-        {
-            _fallParticle.gameObject.SetActive(true);
-            _fallParticle.Play();
-            _startHightPosition = _rigidbody.position.y;
-        }
+         _fallParticle.gameObject.SetActive(true);
+         _fallParticle.Play();
     }
 }
