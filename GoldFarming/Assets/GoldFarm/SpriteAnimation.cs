@@ -8,7 +8,7 @@ namespace GoldFarm
     public class SpriteAnimation : MonoBehaviour
     {
         [SerializeField] [Range(1, 30)] private int _frameRate = 10;
-        //[SerializeField] private UnityEvent<string> _onComplete;
+        [SerializeField] private UnityEvent<string> _onComplete;
         [SerializeField] private AnimationClip[] _clips;
 
         private SpriteRenderer _renderer;
@@ -55,7 +55,7 @@ namespace GoldFarm
         private void StartAnimation()
         {
             _nextFrameTime = Time.time + _secondsPerFrame;
-            _isPlaying = true;
+            enabled = _isPlaying = true;
             _currentFrame = 0;
         }
         private void OnEnable()
@@ -75,9 +75,10 @@ namespace GoldFarm
                 }
                 else
                 {
-                    clip.OnComplete?.Invoke();
-                    //_onComplete.Invoke(clip.Name);
                     enabled = _isPlaying = clip.AllowNextClip;
+                    clip.OnComplete?.Invoke();
+                    _onComplete.Invoke(clip.Name);
+                    
                     if (clip.AllowNextClip)
                     {
                         _currentFrame = 0;

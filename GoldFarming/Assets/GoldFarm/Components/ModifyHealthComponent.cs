@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GoldFarm.Components
 {
-    public class DamageComponent : MonoBehaviour
+    public class ModifyHealthComponent : MonoBehaviour
     {
         [SerializeField] private int _damage;
 

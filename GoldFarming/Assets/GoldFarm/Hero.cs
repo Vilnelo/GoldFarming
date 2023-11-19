@@ -1,19 +1,21 @@
+using GoldFarm;
 using GoldFarm.Components;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
 
     [SerializeField] private float _speed;
-    [SerializeField] private float _jump;
-    [SerializeField] private float _damageJump;
-    [SerializeField] private float _isHightJump;
-    [SerializeField] private LayerMask _ground;
-    [SerializeField] private LayerMask _items;
-    [SerializeField] private LayerMask _spikes;
+    [SerializeField] private float _jumpSpeed;
+    [SerializeField] private float _damageJumpSpeed;
+    [SerializeField] private float _fallVelocity;
     [SerializeField] private float _interactionRadius;
+
+    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private LayerMask _itemsLayer;
+    [SerializeField] private LayerMask _spikes;
+
+    [Space][Header("Particle")]
     [SerializeField] private SpawnComponent _footStepParticles;
     [SerializeField] private ParticleSystem _jumpParticle;
     [SerializeField] private ParticleSystem _fallParticle;
@@ -22,28 +24,29 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _groundCheckRadius;
     [SerializeField] private Vector3 _groundCheckPositionDelta;
 
-    private Rigidbody2D _rigidbody;
-    private float _startHightPosition;
     private Collider2D[] _interactionResult = new Collider2D[1];
-
+    private Rigidbody2D _rigidbody;
     private Vector2 _direction;
     private Animator _animator;
     private string _currentAnimation;
     private bool _isGrounded;
-    private bool _allawDoubleJump;
+    private bool _allowDoubleJump;
     private bool _isJumpingPressed;
 
-    public void SetDirection(Vector2 direction)
-    {
-        _direction = direction;
-
-    }
+    private static readonly int IsGroundKey = Animator.StringToHash("is_ground");
+    private static readonly int IsRunning = Animator.StringToHash("is_running");
+    private static readonly int VerticalVelocity = Animator.StringToHash("vertical_velocity");
+    private static readonly int Hit = Animator.StringToHash("is_hit");
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _startHightPosition = _rigidbody.position.y;
+    }
+    public void SetDirection(Vector2 direction)
+    {
+        _direction = direction;
+
     }
 
     private void Update()
@@ -58,20 +61,9 @@ public class Hero : MonoBehaviour
         var yVelocity = CalculateYVelocity();
         _rigidbody.velocity = new Vector2(xVelocity, yVelocity);
 
-        if (_direction.x != 0 && _isGrounded)
-        {
-            SetClip("run");
-        }
-        else if (_rigidbody.velocity.y > 0 && !_isGrounded)
-        {
-            SetClip("jump");
-        } else if (_rigidbody.velocity.y < 0 && !_isGrounded)
-        {
-            SetClip("fall");
-        } else
-        {
-            SetClip("idle");
-        }
+        _animator.SetBool(IsGroundKey, _isGrounded);
+        _animator.SetBool(IsRunning, _direction.x != 0);
+        _animator.SetFloat(VerticalVelocity, _rigidbody.velocity.y);
 
         UpdateSpriteDirection();
 
@@ -85,7 +77,7 @@ public class Hero : MonoBehaviour
         if (_isGrounded)
         {
             _isJumpingPressed = false;
-            _allawDoubleJump = true;
+            _allowDoubleJump = true;
         }
         if (isJumping)
         {
@@ -108,12 +100,14 @@ public class Hero : MonoBehaviour
         if (!_isFalling) return _yVelosity;
         if (_isGrounded || IsItems())
         {
-            _yVelosity += _jump;
+            _yVelosity += _jumpSpeed;
+            SpawnJumpDust();
         }
-        else if (_allawDoubleJump)
+        else if (_allowDoubleJump)
         {
-            _yVelosity = _jump;
-            _allawDoubleJump = false;
+            SpawnJumpDust();
+            _yVelosity = _jumpSpeed;
+            _allowDoubleJump = false;
         }
         return _yVelosity;
 
@@ -133,13 +127,13 @@ public class Hero : MonoBehaviour
 
     private bool IsGrounded()
     {
-        var hit = Physics2D.CircleCast(transform.position + _groundCheckPositionDelta, _groundCheckRadius, Vector2.down, 0, _ground);
+        var hit = Physics2D.CircleCast(transform.position + _groundCheckPositionDelta, _groundCheckRadius, Vector2.down, 0, _groundLayer);
         return hit.collider != null;
     }
 
     private bool IsItems()
     {
-        var hit = Physics2D.CircleCast(transform.position + _groundCheckPositionDelta, _groundCheckRadius, Vector2.down, 0, _items);
+        var hit = Physics2D.CircleCast(transform.position + _groundCheckPositionDelta, _groundCheckRadius, Vector2.down, 0, _itemsLayer);
         return hit.collider != null;
     }
 
@@ -149,27 +143,20 @@ public class Hero : MonoBehaviour
         Gizmos.DrawSphere(transform.position + _groundCheckPositionDelta, _groundCheckRadius);
     }
 
-    private void SetClip(string _animation)
-    {
-        if (_currentAnimation == _animation) return;
-
-        _animator.Play(_animation);
-        _currentAnimation = _animation;
-    }
-
     public void TakeDamage() 
     {
         _isJumpingPressed = false;
-        SetClip("hit");
+        _animator.SetTrigger(Hit);
         if (!_isGrounded)
         {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _damageJump);
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _damageJumpSpeed);
         }
+
     }
 
     public void Interact()
     {
-        var size = Physics2D.OverlapCircleNonAlloc(transform.position, _interactionRadius, _interactionResult, _items);
+        var size = Physics2D.OverlapCircleNonAlloc(transform.position, _interactionRadius, _interactionResult, _itemsLayer);
 
         for (int i = 0; i < size; i ++) {
             var interactable = _interactionResult[i].GetComponent<InteractableComponent>();
@@ -180,28 +167,32 @@ public class Hero : MonoBehaviour
         }
     }
 
-    public void SpawnFootDust()
-    {
-        _footStepParticles.Spawn();
-    }
-
     public void SpawnJumpDust()
     {
         _jumpParticle.gameObject.SetActive(true);
         _jumpParticle.Play();
     }
 
-    public void IsHight()
+    public void FallDust()
     {
-        _startHightPosition = _rigidbody.position.y;
+        _fallParticle.gameObject.SetActive(true); 
+        _fallParticle.Play();
     }
-    public void SpawnFallDust()
+
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (_startHightPosition - _isHightJump > _rigidbody.position.y)
+        if (other.gameObject.IsInLayer(_groundLayer))
         {
-            _fallParticle.gameObject.SetActive(true);
-            _fallParticle.Play();
-            _startHightPosition = _rigidbody.position.y;
+            var contact = other.contacts[0];
+            if (contact.relativeVelocity.y >= _fallVelocity)
+            {
+                FallDust();
+            }
         }
+    }
+
+    public void SpawnFootDust()
+    {
+        _footStepParticles.Spawn();
     }
 }
