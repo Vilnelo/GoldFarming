@@ -44,6 +44,15 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1eea222b-c133-4688-af26-942ce23f7a12"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -167,6 +176,17 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
                     ""action"": ""Button"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f4039f60-66d0-41e1-b5e4-7fbc35df7ec0"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -177,6 +197,7 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
         m_Hero = asset.FindActionMap("Hero", throwIfNotFound: true);
         m_Hero_Movement = m_Hero.FindAction("Movement", throwIfNotFound: true);
         m_Hero_Button = m_Hero.FindAction("Button", throwIfNotFound: true);
+        m_Hero_Attack = m_Hero.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -240,12 +261,14 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
     private List<IHeroActions> m_HeroActionsCallbackInterfaces = new List<IHeroActions>();
     private readonly InputAction m_Hero_Movement;
     private readonly InputAction m_Hero_Button;
+    private readonly InputAction m_Hero_Attack;
     public struct HeroActions
     {
         private @InputHeroActions m_Wrapper;
         public HeroActions(@InputHeroActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Hero_Movement;
         public InputAction @Button => m_Wrapper.m_Hero_Button;
+        public InputAction @Attack => m_Wrapper.m_Hero_Attack;
         public InputActionMap Get() { return m_Wrapper.m_Hero; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -261,6 +284,9 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
             @Button.started += instance.OnButton;
             @Button.performed += instance.OnButton;
             @Button.canceled += instance.OnButton;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
         }
 
         private void UnregisterCallbacks(IHeroActions instance)
@@ -271,6 +297,9 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
             @Button.started -= instance.OnButton;
             @Button.performed -= instance.OnButton;
             @Button.canceled -= instance.OnButton;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
         }
 
         public void RemoveCallbacks(IHeroActions instance)
@@ -292,5 +321,6 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnButton(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

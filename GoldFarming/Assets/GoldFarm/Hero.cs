@@ -1,5 +1,7 @@
 using GoldFarm;
 using GoldFarm.Components;
+using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
@@ -10,6 +12,7 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _damageJumpSpeed;
     [SerializeField] private float _fallVelocity;
     [SerializeField] private float _interactionRadius;
+    [SerializeField] private int _damage;
 
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private LayerMask _itemsLayer;
@@ -19,12 +22,18 @@ public class Hero : MonoBehaviour
     [SerializeField] private SpawnComponent _footStepParticles;
     [SerializeField] private ParticleSystem _jumpParticle;
     [SerializeField] private ParticleSystem _fallParticle;
-
+    [SerializeField] private ParticleSystem _swordParticle;
 
     [SerializeField] private float _groundCheckRadius;
     [SerializeField] private Vector3 _groundCheckPositionDelta;
 
-    private Collider2D[] _interactionResult = new Collider2D[1];
+    [SerializeField] private AnimatorController _armed;
+    [SerializeField] private AnimatorController _disArmed;
+
+     [SerializeField] private CheckCircleOverlap _attackRange;
+
+    private readonly Collider2D[] _interactionResult = new Collider2D[1];
+
     private Rigidbody2D _rigidbody;
     private Vector2 _direction;
     private Animator _animator;
@@ -32,11 +41,13 @@ public class Hero : MonoBehaviour
     private bool _isGrounded;
     private bool _allowDoubleJump;
     private bool _isJumpingPressed;
+    private bool _isArmed;
 
     private static readonly int IsGroundKey = Animator.StringToHash("is_ground");
     private static readonly int IsRunning = Animator.StringToHash("is_running");
     private static readonly int VerticalVelocity = Animator.StringToHash("vertical_velocity");
     private static readonly int Hit = Animator.StringToHash("is_hit");
+    private static readonly int AttackKey = Animator.StringToHash("attack");
 
     private void Awake()
     {
@@ -101,11 +112,11 @@ public class Hero : MonoBehaviour
         if (_isGrounded || IsItems())
         {
             _yVelosity += _jumpSpeed;
-            SpawnJumpDust();
+            SpawnParticle(_jumpParticle);
         }
         else if (_allowDoubleJump)
         {
-            SpawnJumpDust();
+            SpawnParticle(_jumpParticle);
             _yVelosity = _jumpSpeed;
             _allowDoubleJump = false;
         }
@@ -136,13 +147,13 @@ public class Hero : MonoBehaviour
         var hit = Physics2D.CircleCast(transform.position + _groundCheckPositionDelta, _groundCheckRadius, Vector2.down, 0, _itemsLayer);
         return hit.collider != null;
     }
-
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Gizmos.color = IsGrounded() ? Color.green : IsItems() ? Color.yellow : Color.red;
-        Gizmos.DrawSphere(transform.position + _groundCheckPositionDelta, _groundCheckRadius);
+        Handles.color = IsGrounded() || IsItems() ? HandlessUtils.TransparentGreen : HandlessUtils.TransparentRed;
+        Handles.DrawSolidDisc(transform.position + _groundCheckPositionDelta, Vector3.forward, _groundCheckRadius);
     }
-
+#endif
     public void TakeDamage() 
     {
         _isJumpingPressed = false;
@@ -156,7 +167,7 @@ public class Hero : MonoBehaviour
 
     public void Interact()
     {
-        var size = Physics2D.OverlapCircleNonAlloc(transform.position, _interactionRadius, _interactionResult, _itemsLayer);
+        var size = Physics2D.OverlapCircleNonAlloc(transform.position, _interactionRadius, _interactionResult);
 
         for (int i = 0; i < size; i ++) {
             var interactable = _interactionResult[i].GetComponent<InteractableComponent>();
@@ -167,16 +178,11 @@ public class Hero : MonoBehaviour
         }
     }
 
-    public void SpawnJumpDust()
+    public void SpawnParticle(ParticleSystem particles)
     {
-        _jumpParticle.gameObject.SetActive(true);
-        _jumpParticle.Play();
-    }
-
-    public void FallDust()
-    {
-        _fallParticle.gameObject.SetActive(true); 
-        _fallParticle.Play();
+        particles.gameObject.SetActive(true);
+        particles.transform.localScale = transform.lossyScale;
+        particles.Play();
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -186,7 +192,7 @@ public class Hero : MonoBehaviour
             var contact = other.contacts[0];
             if (contact.relativeVelocity.y >= _fallVelocity)
             {
-                FallDust();
+                SpawnParticle(_fallParticle);
             }
         }
     }
@@ -194,5 +200,31 @@ public class Hero : MonoBehaviour
     public void SpawnFootDust()
     {
         _footStepParticles.Spawn();
+    }
+
+    public void Attack()
+    {
+        if (!_isArmed) return;
+        _animator.SetTrigger(AttackKey);
+        SpawnParticle(_swordParticle);
+    }
+
+    public void OnAttack()
+    {
+        var gos = _attackRange.GetObjectsInRange();
+        foreach (var go in gos)
+        {
+            var hp = go.GetComponent<HealthComponent>();
+            if (hp != null && go.CompareTag("Enemy"))
+            {
+                hp.ApplyDamage(-_damage);
+            }
+        }
+    }
+
+    public void ArmHero()
+    {
+        _isArmed = true;
+        _animator.runtimeAnimatorController = _armed;
     }
 }
