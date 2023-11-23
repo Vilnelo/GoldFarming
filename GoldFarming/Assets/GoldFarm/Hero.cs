@@ -32,7 +32,7 @@ public class Hero : MonoBehaviour
 
      [SerializeField] private CheckCircleOverlap _attackRange;
 
-    private readonly Collider2D[] _interactionResult = new Collider2D[1];
+    private readonly Collider2D[] _interactionResult = new Collider2D[5];
 
     private Rigidbody2D _rigidbody;
     private Vector2 _direction;
