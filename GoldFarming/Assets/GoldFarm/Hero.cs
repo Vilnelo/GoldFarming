@@ -1,5 +1,6 @@
 using GoldFarm;
 using GoldFarm.Components;
+using GoldFarm.Model;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -41,7 +42,6 @@ public class Hero : MonoBehaviour
     private bool _isGrounded;
     private bool _allowDoubleJump;
     private bool _isJumpingPressed;
-    private bool _isArmed;
 
     private static readonly int IsGroundKey = Animator.StringToHash("is_ground");
     private static readonly int IsRunning = Animator.StringToHash("is_running");
@@ -49,10 +49,20 @@ public class Hero : MonoBehaviour
     private static readonly int Hit = Animator.StringToHash("is_hit");
     private static readonly int AttackKey = Animator.StringToHash("attack");
 
+    private GameSession _session;
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        _session = FindObjectOfType<GameSession>();
+        var health = GetComponent<HealthComponent>();
+
+        health.SetHealth(_session.Data.Hp);
+        UpdateHeroWeapon();
     }
     public void SetDirection(Vector2 direction)
     {
@@ -204,12 +214,12 @@ public class Hero : MonoBehaviour
 
     public void Attack()
     {
-        if (!_isArmed) return;
+        if (!_session.Data.IsArmed) return;
         _animator.SetTrigger(AttackKey);
         SpawnParticle(_swordParticle);
     }
 
-    public void OnAttack()
+    public void OnDoAttack()
     {
         var gos = _attackRange.GetObjectsInRange();
         foreach (var go in gos)
@@ -224,7 +234,17 @@ public class Hero : MonoBehaviour
 
     public void ArmHero()
     {
-        _isArmed = true;
-        _animator.runtimeAnimatorController = _armed;
+        _session.Data.IsArmed = true;
+        UpdateHeroWeapon();
+    }
+
+    private void UpdateHeroWeapon()
+    {
+        _animator.runtimeAnimatorController = _session.Data.IsArmed ? _armed : _disArmed;
+    }
+
+    public void OnHealthChanged(int currentHealth)
+    {
+        _session.Data.Hp = currentHealth;
     }
 }

@@ -8,12 +8,13 @@ namespace GoldFarm.Components
 {
     public class GoldCountComponent : MonoBehaviour
     {
-        [SerializeField] private Hero _hero;
         [SerializeField] private int _coinsCount;
+        private Hero _hero;
 
-        public void GoldCount(GameObject _target)
+        public void GoldCount()
         {
-            var _gold = _target.GetComponent<GoldStorageComponent>();
+            _hero = FindObjectOfType<Hero>();
+            var _gold = _hero.GetComponent<GoldStorageComponent>();
             _gold?.CountGold(_coinsCount);
         }
     }

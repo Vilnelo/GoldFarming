@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,10 +12,12 @@ namespace GoldFarm.Components
         [SerializeField] private UnityEvent _onDamage;
         [SerializeField] private UnityEvent _onDie;
         [SerializeField] private UnityEvent _onHeal;
+        [SerializeField] private UnityEvent<int> _onChange;
 
         public void ApplyDamage (int damageValue)
         {
             _health += damageValue;
+            _onChange?.Invoke(_health);
 
             if (damageValue >= 0)
             {
@@ -29,12 +32,15 @@ namespace GoldFarm.Components
                 else
                 {
                     _onDamage?.Invoke();
-                    Debug.Log(_health);
                 }
                 
             }
         }
 
+        public void SetHealth(int health)
+        {
+            _health = health;
+        }
     }
 }
 
