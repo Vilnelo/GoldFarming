@@ -46,5 +46,10 @@ namespace GoldFarm.Model
             return false;
         }
 
+        private void OnApplicationQuit()
+        {
+            _checkpointComponent.OnApplicationQuit();
+        }
+
     }
 }
