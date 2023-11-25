@@ -12,14 +12,7 @@ namespace GoldFarm.Components
         public void Reload()
         {
             var session = FindObjectOfType<GameSession>();
-            if (session.Session != null)
-            {
-                session = session.Session;
-            }
-            else
-            {
                 Destroy(session.gameObject);
-            }
 
 
             var scene = SceneManager.GetActiveScene();
