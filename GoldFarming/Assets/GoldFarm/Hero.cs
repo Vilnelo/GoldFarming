@@ -19,6 +19,8 @@ public class Hero : MonoBehaviour
     [SerializeField] private LayerMask _itemsLayer;
     [SerializeField] private LayerMask _spikes;
 
+    [SerializeField] private LayerCheck _wallCheck;
+
     [Space][Header("Particle")]
     [SerializeField] private SpawnComponent _footStepParticles;
     [SerializeField] private ParticleSystem _jumpParticle;
@@ -42,6 +44,8 @@ public class Hero : MonoBehaviour
     private bool _isGrounded;
     private bool _allowDoubleJump;
     private bool _isJumpingPressed;
+    private bool _isOnWall;
+    private float _defaultGravityScale;
 
     private static readonly int IsGroundKey = Animator.StringToHash("is_ground");
     private static readonly int IsRunning = Animator.StringToHash("is_running");
@@ -54,6 +58,7 @@ public class Hero : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _defaultGravityScale = _rigidbody.gravityScale;
     }
 
     private void Start()
@@ -73,6 +78,17 @@ public class Hero : MonoBehaviour
     private void Update()
     {
         _isGrounded = IsGrounded() || IsItems();
+
+        if (_wallCheck.IsTouchingLayer && _direction.x == transform.localScale.x)
+        {
+            _isOnWall = true;
+            _rigidbody.gravityScale = 0;
+        }
+        else
+        {
+            _isOnWall = false;
+            _rigidbody.gravityScale = _defaultGravityScale;
+        }
 
     }
 
@@ -100,10 +116,19 @@ public class Hero : MonoBehaviour
             _isJumpingPressed = false;
             _allowDoubleJump = true;
         }
+
+        if (_isOnWall)
+        {
+            _allowDoubleJump = true;
+        }
         if (isJumping)
         {
             _isJumpingPressed = true;
             _yVelosity = CalculateJumpVelocity(_yVelosity);
+        }
+        else if (_isOnWall)
+        {
+            _yVelosity *= 0f;
         }
         else if (_rigidbody.velocity.y > 0 && _isJumpingPressed)
 
