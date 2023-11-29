@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GoldFarm;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

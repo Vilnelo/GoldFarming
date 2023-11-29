@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using GoldFarm;
 using UnityEngine;
 
 namespace Assets.GoldFarm.Components

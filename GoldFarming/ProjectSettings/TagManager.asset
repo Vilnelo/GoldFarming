@@ -8,6 +8,7 @@ TagManager:
   - Silver
   - Spikes
   - Enemy
+  - Interactable
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Trash
   - Drop
   - Walls
-  - 
+  - Enemy
   - 
   - 
   - 
