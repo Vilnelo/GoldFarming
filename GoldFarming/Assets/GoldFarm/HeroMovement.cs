@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using GoldFarm;
+using GoldFarm.Creatures;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

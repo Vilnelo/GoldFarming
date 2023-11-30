@@ -1,11 +1,10 @@
 using GoldFarm.Components;
-using GoldFarm.Creatures;
 using GoldFarm.Model;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
-namespace GoldFarm {
+namespace GoldFarm.Creatures {
     public class Hero : Creature
     {       
         [SerializeField] private float _fallVelocity;
@@ -114,6 +113,7 @@ namespace GoldFarm {
         {
             if (!_session.Data.IsArmed) return;
             base.Attack();
+            SpawnParticle(SwordParticle);
         }
 
         public void ArmHero()

@@ -7,6 +7,7 @@ namespace GoldFarm.Creatures
 {
     public class Creature : MonoBehaviour
     {
+        [SerializeField] private bool _invertScale;
         [SerializeField] private float _speed;
         [SerializeField] protected float JumpSpeed;
         [SerializeField] protected float DamageJumpSpeed;
@@ -110,14 +111,14 @@ namespace GoldFarm.Creatures
 
         private void UpdateSpriteDirection()
         {
-
+            var multipler = _invertScale ? -1 : 1;
             if (Direction.x > 0)
             {
-                transform.localScale = Vector3.one;
+                transform.localScale = new Vector3(multipler, 1, 1);
             }
             else if (Direction.x < 0)
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                transform.localScale = new Vector3(-1 * multipler, 1, 1);
             }
         }
         public void TakeDamage()
@@ -133,7 +134,6 @@ namespace GoldFarm.Creatures
         public virtual void Attack()
         {
             Animator.SetTrigger(AttackKey);
-            SpawnParticle(SwordParticle);
         }
         public void OnDoAttack()
         {

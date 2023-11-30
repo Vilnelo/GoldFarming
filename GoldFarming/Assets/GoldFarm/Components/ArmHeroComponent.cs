@@ -1,4 +1,4 @@
-﻿using GoldFarm;
+﻿using GoldFarm.Creatures;
 using UnityEngine;
 
 namespace Assets.GoldFarm.Components

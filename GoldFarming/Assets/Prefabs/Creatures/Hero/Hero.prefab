@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3954274582675669734}
   - component: {fileID: 7121703200638868103}
   - component: {fileID: 1497332135257925832}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: InteractionCheck
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4440231444599666326}
   - component: {fileID: 6861916368284983422}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: FootStepsPosition
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 4875914266267386312}
   - component: {fileID: 7734419328476713536}
   - component: {fileID: 2245126306906154647}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 4121142792961988134}
   - component: {fileID: 6496786240256555973}
   - component: {fileID: 3480881456158161716}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 7412381661162175825}
   - component: {fileID: 8250487002525053386}
   - component: {fileID: 6322263214114309430}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: AttackParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5193,7 +5193,7 @@ GameObject:
   - component: {fileID: 3918469594417144312}
   - component: {fileID: 3107894093892195513}
   - component: {fileID: 8556554827748960902}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CoinDropParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10081,7 +10081,7 @@ GameObject:
   - component: {fileID: 5011748093664757193}
   - component: {fileID: 2139964217538885344}
   - component: {fileID: 406364132235702326}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: FallParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14973,7 +14973,7 @@ GameObject:
   - component: {fileID: 5845680862252092642}
   - component: {fileID: 6527509936966631138}
   - component: {fileID: 6301019599505715474}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: AttackPosition
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -15011,7 +15011,8 @@ MonoBehaviour:
   _mask:
     serializedVersion: 2
     m_Bits: 4094
-  _tags: []
+  _tags:
+  - Enemy
   _onOverLap:
     m_PersistentCalls:
       m_Calls:
@@ -15060,7 +15061,7 @@ GameObject:
   - component: {fileID: 3635898619819132729}
   - component: {fileID: 3696175055667500815}
   - component: {fileID: 6638842863615386139}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Hero
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -15481,7 +15482,7 @@ GameObject:
   - component: {fileID: 5822089584331665998}
   - component: {fileID: 923152485842283196}
   - component: {fileID: 5324850314737480982}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: JumpParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
