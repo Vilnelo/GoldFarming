@@ -1,6 +1,7 @@
 using GoldFarm.Components;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace GoldFarm.Creatures
@@ -12,27 +13,37 @@ namespace GoldFarm.Creatures
 
         [SerializeField] private float _alarmDelay = 0.5f;
         [SerializeField] private float _attackCooldown = 1f;
+        [SerializeField] private float _missHeroCooldown = 0.5f;
 
         private Coroutine _current;
         private GameObject _target;
 
         private SpawnListComponent _particles;
         private Creature _creature;
+        private Animator _animator;
+        private Patrol _patrol;
+
+        private static readonly int DieKey = Animator.StringToHash("die");
+        private bool _isDead;
 
 
         private void Awake()
         {
             _particles = GetComponent<SpawnListComponent>();
             _creature = GetComponent<Creature>();
+            _animator = GetComponent<Animator>();
+            _patrol = GetComponent<Patrol>();
         }
 
         private void Start()
         {
-            StartState(Patrolling());
+            StartState(_patrol.DoPatrol());
         }
 
         public void OnHeroInVision(GameObject go)
         {
+            if (_isDead) return;
+
             _target = go;
 
             StartState(AgroToHero());
@@ -61,6 +72,9 @@ namespace GoldFarm.Creatures
                 }
                 yield return null;
             }
+
+            _particles.Spawn("Miss");
+            yield return new WaitForSeconds(_missHeroCooldown);
         }
 
         private IEnumerator Attack()
@@ -79,19 +93,24 @@ namespace GoldFarm.Creatures
             var direction = _target.transform.position - transform.position;
             direction.y = 0;
             
-            _creature.SetDirection(direction);
-        }
-
-        private IEnumerator Patrolling()
-        {
-            yield return null;
+            _creature.SetDirection(direction.normalized);
         }
 
         private void StartState(IEnumerator coroutine)
         {
+            _creature.SetDirection(Vector2.zero);
+
             if (_current != null) StopCoroutine(_current);
 
             _current = StartCoroutine(coroutine);
+        }
+
+        public void OnDie()
+        {
+            _isDead = true;
+            _animator.SetBool(DieKey, true);
+
+            if (_current != null) StopCoroutine(_current);
         }
     }
 }
