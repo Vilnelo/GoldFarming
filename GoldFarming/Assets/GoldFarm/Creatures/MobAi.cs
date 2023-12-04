@@ -1,7 +1,5 @@
 using GoldFarm.Components;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace GoldFarm.Creatures
@@ -11,9 +9,9 @@ namespace GoldFarm.Creatures
         [SerializeField] private LayerCheck _vision;
         [SerializeField] private LayerCheck _canAttack;
 
-        [SerializeField] private float _alarmDelay = 0.5f;
-        [SerializeField] private float _attackCooldown = 1f;
-        [SerializeField] private float _missHeroCooldown = 0.5f;
+        [SerializeField] private float _alarmDelay = 0.2f;
+        [SerializeField] private float _attackCooldown = 0.2f;
+        [SerializeField] private float _missHeroCooldown = 0.2f;
 
         private Coroutine _current;
         private GameObject _target;
@@ -25,6 +23,7 @@ namespace GoldFarm.Creatures
 
         private static readonly int DieKey = Animator.StringToHash("die");
         private bool _isDead;
+        //private float _animationDelay = 0.5f;
 
 
         private void Awake()
@@ -73,8 +72,10 @@ namespace GoldFarm.Creatures
                 yield return null;
             }
 
+            _creature.SetDirection(Vector2.zero);
             _particles.Spawn("Miss");
             yield return new WaitForSeconds(_missHeroCooldown);
+            StartState(_patrol.DoPatrol());
         }
 
         private IEnumerator Attack()
@@ -107,10 +108,14 @@ namespace GoldFarm.Creatures
 
         public void OnDie()
         {
-            _isDead = true;
             _animator.SetBool(DieKey, true);
+            _isDead = true;
+            _creature.SetDirection(Vector2.zero);
 
-            if (_current != null) StopCoroutine(_current);
+            if (_current != null)
+            {
+                StopCoroutine(_current);
+            }
         }
     }
 }

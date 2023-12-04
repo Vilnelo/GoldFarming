@@ -293,6 +293,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6918c27e26205e74293514eeacc68fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &211065362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 211065363}
+  m_Layer: 0
+  m_Name: PointPatrol1
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &211065363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211065362}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -36.65, y: -4.55, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &229731999
 GameObject:
   m_ObjectHideFlags: 0
@@ -10044,6 +10075,37 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1016569889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1016569890}
+  m_Layer: 0
+  m_Name: PointPatrol2
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1016569890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016569889}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -24.5, y: -4.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1036728552
 GameObject:
   m_ObjectHideFlags: 0
@@ -10441,11 +10503,15 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 0ec49871a29f8c14ea3a9af6da4e4e0e, type: 2}
   - m_RefCount: 8
     m_Data: {fileID: 11400000, guid: 9be3ba17caa46634ea03f1bbafa5eb63, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 8
     m_Data: {fileID: 1557567836, guid: 1ecd7e003590ad84883bdae73245c290, type: 3}
   - m_RefCount: 8
     m_Data: {fileID: -1651228763, guid: 1ecd7e003590ad84883bdae73245c290, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 16
     m_Data:
@@ -10471,8 +10537,8 @@ Tilemap:
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -46, y: -5, z: 0}
-  m_Size: {x: 46, y: 8, z: 1}
+  m_Origin: {x: -46, y: -6, z: 0}
+  m_Size: {x: 46, y: 9, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -11582,3 +11648,5 @@ SceneRoots:
   - {fileID: 1173130215}
   - {fileID: 1373615280}
   - {fileID: 1566301639}
+  - {fileID: 211065363}
+  - {fileID: 1016569890}
