@@ -130,6 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 395942576182040231}
   _prefab: {fileID: 3127282268345837409, guid: f5cc3b3c06387de4b8d543a3e1bae64e, type: 3}
+  _invertXScale: 0
 --- !u!1 &2380477107907801237
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 4440231444599666326}
   _prefab: {fileID: 3127282268345837409, guid: 1c51d3ca6a1cfa1418ba6a4b65ccea0d, type: 3}
+  _invertXScale: 0
 --- !u!1 &2743987117169062355
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +412,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.6208, y: 0.6471}
+  m_Offset: {x: -0.9020195, y: 0.6471}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -421,7 +423,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.2416, y: 2.2942}
+  m_Size: {x: 5.679161, y: 2.2942}
   m_EdgeRadius: 0
 --- !u!114 &458395479768716637
 MonoBehaviour:
@@ -452,6 +454,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tag: Player
+  _layer:
+    serializedVersion: 2
+    m_Bits: 4294967295
   _action:
     m_PersistentCalls:
       m_Calls:
@@ -5621,6 +5626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7572961411900331851}
   _prefab: {fileID: 3127282268345837409, guid: a4fac7ceee2ae9d4784dc3ec420afa08, type: 3}
+  _invertXScale: 0
 --- !u!1 &9133337675432642574
 GameObject:
   m_ObjectHideFlags: 0
@@ -5887,6 +5893,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9133337675432642574}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: set_layer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 8
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

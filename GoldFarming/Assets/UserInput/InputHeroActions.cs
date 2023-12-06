@@ -53,6 +53,15 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""75d725f9-eb40-4e0c-aa28-f15dde8a54e2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -187,6 +196,17 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d653fedc-d921-48b7-b152-412eb4c4faab"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -198,6 +218,7 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
         m_Hero_Movement = m_Hero.FindAction("Movement", throwIfNotFound: true);
         m_Hero_Button = m_Hero.FindAction("Button", throwIfNotFound: true);
         m_Hero_Attack = m_Hero.FindAction("Attack", throwIfNotFound: true);
+        m_Hero_Throw = m_Hero.FindAction("Throw", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,6 +283,7 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Hero_Movement;
     private readonly InputAction m_Hero_Button;
     private readonly InputAction m_Hero_Attack;
+    private readonly InputAction m_Hero_Throw;
     public struct HeroActions
     {
         private @InputHeroActions m_Wrapper;
@@ -269,6 +291,7 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Hero_Movement;
         public InputAction @Button => m_Wrapper.m_Hero_Button;
         public InputAction @Attack => m_Wrapper.m_Hero_Attack;
+        public InputAction @Throw => m_Wrapper.m_Hero_Throw;
         public InputActionMap Get() { return m_Wrapper.m_Hero; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -287,6 +310,9 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
         }
 
         private void UnregisterCallbacks(IHeroActions instance)
@@ -300,6 +326,9 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
         }
 
         public void RemoveCallbacks(IHeroActions instance)
@@ -322,5 +351,6 @@ public partial class @InputHeroActions: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnButton(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
     }
 }

@@ -11094,7 +11094,7 @@ MonoBehaviour:
   _data:
     Coins: 3
     Hp: 10
-    IsArmed: 0
+    IsArmed: 1
 --- !u!4 &1373615280
 Transform:
   m_ObjectHideFlags: 0
@@ -11339,6 +11339,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 1567570801}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: set_layerOverridePriority
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: UnityEngine.Collider2D, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_IntArgument
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_IntArgument
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3635898619819132729, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+      propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 9133337675432642574, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
       propertyPath: m_Name
       value: Sharky
@@ -11348,6 +11392,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+--- !u!70 &1567570801 stripped
+CapsuleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 1595193292630256504, guid: dc8c7217eac008746ad7ef63f7cedf49, type: 3}
+  m_PrefabInstance: {fileID: 1566301639}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2055270912
 GameObject:
   m_ObjectHideFlags: 0

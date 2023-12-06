@@ -15,6 +15,7 @@ namespace GoldFarm.Creatures
 
         private Coroutine _current;
         private GameObject _target;
+        //private CapsuleCollider2D _capsuleCollider;
 
         private SpawnListComponent _particles;
         private Creature _creature;
@@ -23,7 +24,6 @@ namespace GoldFarm.Creatures
 
         private static readonly int DieKey = Animator.StringToHash("die");
         private bool _isDead;
-        //private float _animationDelay = 0.5f;
 
 
         private void Awake()
@@ -32,6 +32,7 @@ namespace GoldFarm.Creatures
             _creature = GetComponent<Creature>();
             _animator = GetComponent<Animator>();
             _patrol = GetComponent<Patrol>();
+            //_capsuleCollider = GetComponent<CapsuleCollider2D>();
         }
 
         private void Start()
@@ -50,10 +51,18 @@ namespace GoldFarm.Creatures
 
         private IEnumerator AgroToHero()
         {
+            LookAtHero();
             _particles.Spawn("Exclamation");
             yield return new WaitForSeconds(_alarmDelay);
 
             StartState(GoToHero());
+        }
+
+        private void LookAtHero()
+        {
+            var direction = GetDirectionToTarget();
+            _creature.SetDirection(Vector2.zero);
+            _creature.UpdateSpriteDirection(direction);
         }
 
         private IEnumerator GoToHero()
@@ -91,10 +100,16 @@ namespace GoldFarm.Creatures
 
         private void SetDirectionToTarget()
         {
+            var direction = GetDirectionToTarget();
+            
+            _creature.SetDirection(direction);
+        }
+
+        private Vector2 GetDirectionToTarget()
+        {
             var direction = _target.transform.position - transform.position;
             direction.y = 0;
-            
-            _creature.SetDirection(direction.normalized);
+            return direction.normalized;
         }
 
         private void StartState(IEnumerator coroutine)
@@ -111,6 +126,10 @@ namespace GoldFarm.Creatures
             _animator.SetBool(DieKey, true);
             _isDead = true;
             _creature.SetDirection(Vector2.zero);
+            //_capsuleCollider.direction = CapsuleDirection2D.Horizontal;
+
+            //_capsuleCollider.size = new Vector2(_capsuleCollider.size.y, _capsuleCollider.size.x);
+            //_capsuleCollider.offset = new Vector2(_capsuleCollider.offset.x, _capsuleCollider.offset.y);
 
             if (_current != null)
             {

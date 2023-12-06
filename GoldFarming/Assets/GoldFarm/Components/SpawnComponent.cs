@@ -9,12 +9,16 @@ namespace GoldFarm.Components
     {
         [SerializeField] private Transform _target;
         [SerializeField] private GameObject _prefab;
+        [SerializeField] private bool _invertXScale;
 
         [ContextMenu("Switch")]
         public void Spawn()
         {
             var instantiate = Instantiate(_prefab, _target.position, Quaternion.identity);
-            instantiate.transform.localScale = transform.lossyScale;
+            var scale = _target.lossyScale;
+            scale.x *= _invertXScale ? -1 : 1;
+            
+            instantiate.transform.localScale = scale;
 
         }
     }

@@ -1,5 +1,6 @@
 using GoldFarm.Components;
 using GoldFarm.Model;
+using GoldFarm.Utils;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -14,11 +15,14 @@ namespace GoldFarm.Creatures {
 
         [SerializeField] private LayerCheck _wallCheck;
 
+        [SerializeField] private Cooldown _throwCooldown;
         [SerializeField] private float _groundCheckRadius;
         [SerializeField] private Vector3 _groundCheckPositionDelta;
 
         [SerializeField] private AnimatorController _armed;
         [SerializeField] private AnimatorController _disArmed;
+
+        private static readonly int ThrowKey = Animator.StringToHash("throw");
 
         private bool _allowDoubleJump;
         private bool _isOnWall;
@@ -125,6 +129,20 @@ namespace GoldFarm.Creatures {
         private void UpdateHeroWeapon()
         {
             Animator.runtimeAnimatorController = _session.Data.IsArmed ? _armed : _disArmed;
+        }
+
+        public void Throw()
+        {
+            if (_throwCooldown.IsReady)
+            {
+                Animator.SetTrigger(ThrowKey);
+                _throwCooldown.Reset();
+            }  
+        }
+
+        public void OnDoThrow()
+        {
+            _particles.Spawn("ThrowSword");
         }
     }
 }

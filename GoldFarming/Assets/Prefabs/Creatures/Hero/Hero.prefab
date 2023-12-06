@@ -78,6 +78,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0920e72362c37324586f40d8070f7d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &929117137978984262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3214281779034158234}
+  - component: {fileID: 6052992269692595351}
+  m_Layer: 12
+  m_Name: ThrowPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3214281779034158234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929117137978984262}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.406, y: -0.052, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 313795439702667386}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6052992269692595351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929117137978984262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69075b9dee68e78439dd4d1a00e97bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 3214281779034158234}
+  _prefab: {fileID: 3127282268345837409, guid: 1f61a0b8c9e01b143932775679b046ef, type: 3}
+  _invertXScale: 0
 --- !u!1 &2380477107907801237
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,6 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 4440231444599666326}
   _prefab: {fileID: 3127282268345837409, guid: 1c51d3ca6a1cfa1418ba6a4b65ccea0d, type: 3}
+  _invertXScale: 0
 --- !u!1 &5004991909067307791
 GameObject:
   m_ObjectHideFlags: 0
@@ -15083,6 +15131,7 @@ Transform:
   m_Children:
   - {fileID: 3918469594417144312}
   - {fileID: 4440231444599666326}
+  - {fileID: 3214281779034158234}
   - {fileID: 5011748093664757193}
   - {fileID: 5822089584331665998}
   - {fileID: 7412381661162175825}
@@ -15132,7 +15181,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1569835427
   m_SortingLayer: 5
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 6fcc594d1fe192b4cabcf8a59c5e621b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -15169,6 +15218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b4df13a8c98eb048b6afea3aeb700f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _invertScale: 0
   _speed: 4
   JumpSpeed: 12
   DamageJumpSpeed: 12
@@ -15188,6 +15238,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _wallCheck: {fileID: 7734419328476713536}
+  _throwCooldown:
+    _value: 1
   _groundCheckRadius: 0.31
   _groundCheckPositionDelta: {x: 0, y: -0.09, z: 0}
   _armed: {fileID: 9100000, guid: 8244245906b422c4cbcc12260d9caf20, type: 2}
@@ -15265,6 +15317,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1eea222b-c133-4688-af26-942ce23f7a12
     m_ActionName: Hero/Attack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7331899609297879483}
+        m_TargetAssemblyTypeName: HeroMovement, Assembly-CSharp
+        m_MethodName: OnThrow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 75d725f9-eb40-4e0c-aa28-f15dde8a54e2
+    m_ActionName: Hero/Throw[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Hero
@@ -15471,6 +15539,8 @@ MonoBehaviour:
   _spawners:
   - Id: FootSteps
     Component: {fileID: 6861916368284983422}
+  - Id: ThrowSword
+    Component: {fileID: 6052992269692595351}
 --- !u!1 &9193221906678390585
 GameObject:
   m_ObjectHideFlags: 0
