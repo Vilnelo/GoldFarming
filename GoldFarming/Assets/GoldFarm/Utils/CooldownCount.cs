@@ -4,7 +4,7 @@ using UnityEngine;
 namespace GoldFarm.Utils
 {
     [Serializable]
-    public class Cooldown
+    public class CooldownCount
     {
         [SerializeField] private float _value;
 

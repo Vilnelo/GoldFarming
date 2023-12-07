@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 public class HeroMovement : MonoBehaviour
 {
     [SerializeField] private Hero _hero;
+    [SerializeField] private float _throwHold;
     private Vector2 direction;
+    private float _throwStartTime;
 
     public void Movement(InputAction.CallbackContext context)
     {
@@ -30,12 +32,22 @@ public class HeroMovement : MonoBehaviour
     }
     public void OnThrow(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        OnThrowStarted(context);
+        
+        if (context.canceled && Time.time - _throwStartTime >= _throwHold)
+        {
+           _hero.SuperThrow();
+        } else if (context.canceled)
         {
             _hero.Throw();
         }
     }
 
-
-
+    private void OnThrowStarted(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            _throwStartTime = Time.time;
+        }
+    }
 }

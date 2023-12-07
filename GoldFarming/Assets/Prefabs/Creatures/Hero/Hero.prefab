@@ -15109,6 +15109,7 @@ GameObject:
   - component: {fileID: 3635898619819132729}
   - component: {fileID: 3696175055667500815}
   - component: {fileID: 6638842863615386139}
+  - component: {fileID: 1040052966139947992}
   m_Layer: 12
   m_Name: Hero
   m_TagString: Player
@@ -15206,6 +15207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hero: {fileID: 7749927896064231665}
+  _throwHold: 1
 --- !u!114 &7749927896064231665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15244,6 +15246,8 @@ MonoBehaviour:
   _groundCheckPositionDelta: {x: 0, y: -0.09, z: 0}
   _armed: {fileID: 9100000, guid: 8244245906b422c4cbcc12260d9caf20, type: 2}
   _disArmed: {fileID: 9100000, guid: 9adce0f8b3bed9747a90de3d13fe8be9, type: 2}
+  _thrownSwordsCount: 2
+  _SuperThrowDelay: 0.1
 --- !u!114 &3167917551836787622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15541,6 +15545,19 @@ MonoBehaviour:
     Component: {fileID: 6861916368284983422}
   - Id: ThrowSword
     Component: {fileID: 6052992269692595351}
+--- !u!114 &1040052966139947992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133337675432642574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a401bd2dcff9d0479c725110775f518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _swordLimit: 5
 --- !u!1 &9193221906678390585
 GameObject:
   m_ObjectHideFlags: 0

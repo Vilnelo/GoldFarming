@@ -1,6 +1,8 @@
 using GoldFarm.Components;
 using GoldFarm.Model;
 using GoldFarm.Utils;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -15,12 +17,14 @@ namespace GoldFarm.Creatures {
 
         [SerializeField] private LayerCheck _wallCheck;
 
-        [SerializeField] private Cooldown _throwCooldown;
+        [SerializeField] private CooldownCount _throwCooldown;
         [SerializeField] private float _groundCheckRadius;
         [SerializeField] private Vector3 _groundCheckPositionDelta;
 
         [SerializeField] private AnimatorController _armed;
         [SerializeField] private AnimatorController _disArmed;
+        [SerializeField] private int _thrownSwordsCount;
+        [SerializeField] private float _SuperThrowDelay;
 
         private static readonly int ThrowKey = Animator.StringToHash("throw");
 
@@ -28,6 +32,8 @@ namespace GoldFarm.Creatures {
         private bool _isOnWall;
         private float _defaultGravityScale;
         private GameSession _session;
+        private SwordStorageComponent _swords;
+        private int _thrownSword = -1;
 
         protected override void Awake()
         {
@@ -39,6 +45,7 @@ namespace GoldFarm.Creatures {
         {
             _session = FindObjectOfType<GameSession>();
             var health = GetComponent<HealthComponent>();
+            _swords = GetComponent<SwordStorageComponent>();
 
             health.SetHealth(_session.Data.Hp);
             UpdateHeroWeapon();
@@ -133,16 +140,36 @@ namespace GoldFarm.Creatures {
 
         public void Throw()
         {
-            if (_throwCooldown.IsReady)
+            if (_throwCooldown.IsReady && _session.Data.Swords > 1)
             {
                 Animator.SetTrigger(ThrowKey);
                 _throwCooldown.Reset();
-            }  
+                _swords.CountSwords(_thrownSword);
+            }
         }
 
         public void OnDoThrow()
         {
             _particles.Spawn("ThrowSword");
+        }
+
+        public void SuperThrow()
+        {
+            StartCoroutine(SuperThrowDelay());
+        }
+
+        public IEnumerator SuperThrowDelay ()
+        {
+            if (_session.Data.Swords >= 1 + _thrownSwordsCount)
+            {
+                for (int i = 0; i < _thrownSwordsCount; i++)
+                {
+                    Animator.SetTrigger(ThrowKey);
+                    _swords.CountSwords(_thrownSword);
+
+                    yield return new WaitForSeconds(_SuperThrowDelay);
+                }
+            }
         }
     }
 }
