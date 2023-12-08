@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4545455447193264305}
   - component: {fileID: 1283299104147551006}
   - component: {fileID: 8203777627987173099}
+  - component: {fileID: 4853963688792744278}
   m_Layer: 3
   m_Name: DestructableBarrel
   m_TagString: Enemy
@@ -31,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2760735729660548888}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -41.5, y: -4.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -198,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d772a5e44d2744dad939606117a016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: -15
+  _health: 2
   _onDamage:
     m_PersistentCalls:
       m_Calls:
@@ -221,6 +222,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: GoldFarm.SpriteAnimation, Assembly-CSharp
         m_MethodName: SetClip
         m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: destroy
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4853963688792744278}
+        m_TargetAssemblyTypeName: GoldFarm.Components.CoinDropComponent, Assembly-CSharp
+        m_MethodName: SpawnCoins
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: destroy
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1283299104147551006}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -321,3 +346,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 414861549389116076}
   _prefab: {fileID: 7978571097949114526, guid: 31bb1ea41a2045d469953b2cb97c9267, type: 3}
+  _invertXScale: 0
+--- !u!114 &4853963688792744278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2760735729660548888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c8e331d9171d8b4ca582b1a3ee67607, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefabs:
+  - CoinPrefab: {fileID: 5808200400514212083, guid: 3fcf0c1f921e7d249be65d44e9a6b80a, type: 3}
+    DropProbability: 30
+  - CoinPrefab: {fileID: 6175324950195921950, guid: 04553bdc22e69954fae353a6c70f654f, type: 3}
+    DropProbability: 70
+  _minCoins: 5
+  _maxCoins: 10
+  _coinSpawnForce: 5

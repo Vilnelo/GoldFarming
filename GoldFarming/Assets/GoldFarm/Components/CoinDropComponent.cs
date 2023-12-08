@@ -1,16 +1,15 @@
-﻿using System.Collections;
+﻿using GoldFarm.Model;
+using System.Collections;
 using UnityEngine;
 
 namespace GoldFarm.Components
 {
     public class CoinDropComponent : MonoBehaviour
     {
-        [SerializeField] private GameObject _goldCoinPrefab;
-        [SerializeField] private GameObject _silverCoinPrefab;
+        [SerializeField] private CoinDropPrefab[] _prefabs;
         [SerializeField] private int _minCoins = 1;
         [SerializeField] private int _maxCoins = 5;
         [SerializeField] private float _coinSpawnForce = 5f;
-        [SerializeField] private float _goldProbability = 0.7f;
 
         public void SpawnCoins()
         {
@@ -18,16 +17,48 @@ namespace GoldFarm.Components
 
             for (int i = 0; i < numberOfCoins; i++)
             {
-                GameObject coinPrefab = (Random.value < _goldProbability) ? _goldCoinPrefab : _silverCoinPrefab;
-                GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
-                Rigidbody2D coinRb = coin.GetComponent<Rigidbody2D>();
+                GameObject coinPrefab = GetRandomCoinPrefab();
 
-                if (coinRb != null)
+                if (coinPrefab != null )
                 {
-                    Vector2 force = new Vector2(Random.Range(-1f, 1f), Random.Range(0.5f, 1f)).normalized * _coinSpawnForce;
-                    coinRb.AddForce(force, ForceMode2D.Impulse);
+                    GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+                    Rigidbody2D coinRb = coin.GetComponent<Rigidbody2D>();
+
+                    if (coinRb != null)
+                    {
+                        Vector2 force = new Vector2(Random.Range(-1f, 1f), Random.Range(0.5f, 1f)).normalized * _coinSpawnForce;
+                        coinRb.AddForce(force, ForceMode2D.Impulse);
+                    }
                 }
             }
+        }
+
+        private GameObject GetRandomCoinPrefab()
+        {
+            if (_prefabs != null && _prefabs.Length > 0)
+            {
+                float totalProbability = 0f;
+
+                foreach (var coinData in _prefabs)
+                {
+                    totalProbability += coinData.DropProbability;
+                }
+
+                float randomValue = Random.value * totalProbability;
+                float cumulativeProbability = 0f;
+
+                for (int i = 0; i < _prefabs.Length; i++)
+                {
+                    cumulativeProbability += _prefabs[i].DropProbability;
+
+                    if (randomValue <= cumulativeProbability)
+                    {
+                        return _prefabs[i].CoinPrefab;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
